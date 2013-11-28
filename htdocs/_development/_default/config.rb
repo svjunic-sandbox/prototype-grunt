@@ -1,3 +1,5 @@
+#"Last Change: 28-Nov-2013."
+
 http_path = "./"
 css_dir = "../css"
 sass_dir = "scss"
