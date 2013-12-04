@@ -1,13 +1,11 @@
-// #"Last Change: 28-Nov-2013."
+// #"Last Change: 04-Dec-2013."
 
 module.exports = function(grunt) {
 
-    'use strict';
+ 'use strict';
 
-    var mkdirp = require('mkdirp');
-    var bower  = require('bower');
-
-
+  var mkdirp = require('mkdirp');
+  var bower  = require('bower');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
@@ -20,15 +18,12 @@ module.exports = function(grunt) {
     },
     watch:{
        options: {
-          livereload: true
+          livereload: true,
+          nospawn: true
        },
        sprite : {
          files: [
-           'sprite_parts/common/icon/*.png',
-           'sprite_parts/common/menu/*.png',
-           'sprite_parts/common/global/*.png',
-           'sprite_parts/common/category/*.png',
-           'sprite_parts/common/i/*.png'
+            //'sprite_parts/common/*.png'
          ],
          tasks: ['compass:force']
        },
@@ -42,20 +37,35 @@ module.exports = function(grunt) {
        js : {
          /* 全ファイル */
          files: [
-            'tmp/js/**/*.js'
+            '../js/**/*.js'
          ],
          /* ディレクトリ以下 */
-         //files: ['tmp/js/*'],
+         //files: ['../js/*'],
          //files: '*.js',
          /* 単一 */
          //files: 'mogeta.js',
          tasks: []
        },
        html : {
-         files: 'tmp/**/*.html',
+         files: '../**/*.html',
          tasks: []
+       },
+       jade : {
+         files: '../**/*.jade',
+         tasks: ['jade:compie']
        }
-    }, 
+    },
+    jade: {
+        compile: {
+            options: {
+                data: {
+                    debug: false
+                }
+            },
+            files: {
+            }
+        }
+    },
     compass: {
       dev: {
         options: {
@@ -108,6 +118,7 @@ module.exports = function(grunt) {
       var directory= [
           'scss',
           'sprite_parts',
+          'jade',
           '../img',
           '../js' ,
           '../js/contents',
@@ -148,5 +159,6 @@ module.exports = function(grunt) {
 
 
 
+  grunt.registerTask("default", ["connect","watch"]);
   grunt.registerTask("development", ["connect","watch"]);
 };
