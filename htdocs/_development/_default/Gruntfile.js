@@ -130,9 +130,8 @@ module.exports = function(grunt) {
           mkdirp( path , err, success );
       });
     
-    
-      function err(err) {
-          console.log( err ); 
+      function err( error ) {
+          console.log( error ); 
       }
       function success() {
           console.log( 'success' ); 
