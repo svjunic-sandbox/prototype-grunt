@@ -1,11 +1,11 @@
-// #"Last Change: 09-Feb-2014."
+// #"Last Change: 10-Feb-2014."
 
 module.exports = function(grunt) {
 
  'use strict';
 
   var mkdirp = require('mkdirp');
-  var bower  = require('bower');
+  //var bower  = require('bower');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
@@ -23,14 +23,14 @@ module.exports = function(grunt) {
        },
        sprite : {
          files: [
-            //'sprite_parts/common/*.png'
+            './sprite_parts/**/*.png'
          ],
          tasks: ['compass:force']
        },
        scss : {
          files: [
-            'scss/**/*.scss',
-            'scss/contents/**/*.scss',
+            './scss/**/*.scss'
+            //'scss/contents/**/*.scss',
          ],
          tasks: ['compass:dev']
        },
@@ -47,7 +47,10 @@ module.exports = function(grunt) {
          tasks: []
        },
        html : {
-         files: '../**/*.html',
+         files: [ 
+             '../**/*.html',
+             '../!_development/**/*.html'
+         ],
          tasks: []
        },
        jade : {
@@ -74,7 +77,8 @@ module.exports = function(grunt) {
       dev: {
         options: {
           config: "config.rb",
-          environment: "development"
+          environment: "development",
+          force: true
         }
       },
       force: {
@@ -92,7 +96,8 @@ module.exports = function(grunt) {
       prod: {
         options: {
           config: "config.rb",
-          environment: "production"
+          environment: "production",
+          force: true
         }
       }
     }
@@ -104,6 +109,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-csslint');
@@ -115,7 +121,6 @@ module.exports = function(grunt) {
 
   //タスク登録
   grunt.registerTask("svinit", "My Initialize Task", function(){
-    create_directory();
 
     function create_directory() {
     
@@ -141,6 +146,8 @@ module.exports = function(grunt) {
           console.log( 'success' ); 
       }
     }
+
+    create_directory();
   });
 
 
