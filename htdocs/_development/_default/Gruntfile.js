@@ -1,4 +1,4 @@
-// #"Last Change: 04-Dec-2013."
+// #"Last Change: 09-Feb-2014."
 
 module.exports = function(grunt) {
 
@@ -51,19 +51,23 @@ module.exports = function(grunt) {
          tasks: []
        },
        jade : {
-         files: '../**/*.jade',
-         tasks: ['jade:compie']
+         files: 'jade/**/*.jade',
+         tasks: ['jade']
        }
     },
     jade: {
-        compile: {
+       compile: {
             options: {
-                data: {
-                    debug: false
-                }
+                client: false,
+                pretty: true
             },
-            files: {
-            }
+            files: [ {
+                cwd: "jade",
+                src: "**/*.jade",
+                dest: "../",
+                expand: true,
+                ext: ".html"
+            } ]
         }
     },
     compass: {
@@ -137,25 +141,7 @@ module.exports = function(grunt) {
           console.log( 'success' ); 
       }
     }
-
-    // library_install();
-    // function library_install(){
-    //     console.log( 'Install Library' );
-    //     var library = [
-    //         'jquery',
-    //         'lodash'
-    //     ];
-    //     var options = {
-    //         save: true
-    //     };
-    //     bower.commands
-    //         .install( library, options, {} )
-    //         .on( 'end', function ( data ) {
-    //             data && console.log( data );
-    //         });
-    // }
   });
-
 
 
   grunt.registerTask("default", ["connect","watch"]);
