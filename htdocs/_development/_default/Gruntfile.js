@@ -1,4 +1,4 @@
-// #"Last Change: 10-Feb-2014."
+// #"Last Change: 18-Feb-2014."
 
 module.exports = function(grunt) {
 
@@ -8,7 +8,15 @@ module.exports = function(grunt) {
   //var bower  = require('bower');
 
   grunt.initConfig({
+
+
+    /* pkg
+     * */
     pkg: grunt.file.readJSON("package.json"),
+
+
+    /* connect
+     * */
     connect: {
         livereload: {
             options: {
@@ -16,11 +24,11 @@ module.exports = function(grunt) {
             }
         }
     },
+
+
+    /* watch
+     * */
     watch:{
-       options: {
-          livereload: true,
-          nospawn: true
-       },
        sprite : {
          files: [
             './sprite_parts/**/*.png'
@@ -35,6 +43,10 @@ module.exports = function(grunt) {
          tasks: ['compass:dev']
        },
        js : {
+         options: {
+            livereload: true,
+            nospawn: true
+         },
          /* 全ファイル */
          files: [
             '../js/**/*.js'
@@ -54,25 +66,56 @@ module.exports = function(grunt) {
          tasks: []
        },
        jade : {
-         files: 'jade/**/*.jade',
+         //files: 'jade/**/*.jade',
+         files: [ 
+             'jade/**/*.jade',
+             '!jade/_includes/**/*.jade'
+         ],
          tasks: ['jade']
        }
     },
+
+
+    /* jade
+     * */
     jade: {
        compile: {
-            options: {
-                client: false,
-                pretty: true
-            },
-            files: [ {
-                cwd: "jade",
-                src: "**/*.jade",
-                dest: "../",
-                expand: true,
-                ext: ".html"
-            } ]
-        }
+           options: {
+               client: false,
+               pretty: true
+           },
+           files: [ {
+               cwd: "jade",
+               src: [
+                   "**/*.jade",
+                   "!_includes/**/*.jade"
+               ],
+               dest: "../",
+               expand: true,
+               ext: ".html"
+           } ]
+       },
+       prod : {
+           options: {
+               client: false,
+               pretty: false
+           },
+           files: [ {
+               cwd: "jade",
+               src: [
+                   "**/*.jade",
+                   "!_includes/**/*.jade"
+               ],
+               dest: "../",
+               expand: true,
+               ext: ".html"
+           } ]
+       }
     },
+
+
+    /* comapss
+     * */
     compass: {
       dev: {
         options: {
@@ -100,23 +143,51 @@ module.exports = function(grunt) {
           force: true
         }
       }
+    },
+
+
+    /* uglify
+     * */
+    uglify : {
+        prod : {
+            files: [{
+                expand: true,
+                cwd: '../../release/js',
+                src: '**/*.js',
+                dest: '../../release/js'
+            }]
+        }
+    },
+
+
+    /* copy 
+     * */
+    copy : {
+        prod : {
+            expand: true,
+            cwd: '../',
+            src: ['**', '!_development', '!_development/**/*'],
+            dest: '../../release/'
+        }
     }
   });
 
   //プラグインの読み
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
-  grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-csslint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jade' );
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+//  grunt.loadNpmTasks('grunt-contrib-sass');
+//  grunt.loadNpmTasks('grunt-contrib-csslint');
+//  grunt.loadNpmTasks('grunt-contrib-requirejs');
+//  grunt.loadNpmTasks('grunt-typescript');
 
 
   //タスク登録
@@ -152,5 +223,6 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask("default", ["connect","watch"]);
-  grunt.registerTask("development", ["connect","watch"]);
+  grunt.registerTask("deploy:dev", ["connect","watch"]);
+  grunt.registerTask("deploy:prod", [ 'jade:prod','compass:prod',"copy:prod","uglify:prod" ]);
 };
