@@ -160,18 +160,18 @@ module.exports = function(grunt) {
 
   //プラグインの読み
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
-  grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-jade' );
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-jade' );
-  grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-typescript');
 
 
@@ -185,6 +185,7 @@ module.exports = function(grunt) {
           'sprite_parts',
           'jade',
           'jade/_includes',
+          'coffee',
           'coffee/contents',
           DOCUMENT_ROOT + 'img',
           DOCUMENT_ROOT + 'js' ,
