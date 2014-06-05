@@ -61,10 +61,25 @@ module.exports = function(grunt) {
          ],
          tasks: []
        },
+       coffee : {
+         files: 'coffee/**/*.coffee',
+         tasks: ['coffee']
+       },
        jade : {
          files: 'jade/**/*.jade',
          tasks: ['jade']
        }
+    },
+    coffee: {
+      compile: {
+        files:[{ 
+          expand: true,
+          cwd: './coffee',
+          src: ['**/*.coffee'],
+          dest: './js',
+          ext: '.js',
+        }]
+      }
     },
     jade: {
        compile: {
@@ -173,8 +188,8 @@ module.exports = function(grunt) {
           'coffee/contents',
           DOCUMENT_ROOT + 'img',
           DOCUMENT_ROOT + 'js' ,
-          DOCUMENT_ROOT + 'js/contents',
           DOCUMENT_ROOT + 'js/libs',
+          DOCUMENT_ROOT + 'js/contents',
           DOCUMENT_ROOT + 'css/contents'
       ];
     
