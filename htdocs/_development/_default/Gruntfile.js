@@ -1,4 +1,4 @@
-// #"Last Change: 05-Jun-2014."
+// #"Last Change: 22-Jul-2014."
 
 var DOCUMENT_ROOT = '../';
 
@@ -89,7 +89,13 @@ module.exports = function(grunt) {
             },
             files: [ {
                 cwd: "jade",
-                src: "**/*.jade",
+                src: [
+                  "*.jade",
+                  "**/*.jade",
+                  "!_includes",
+                  "!_includes/*",
+                  "!_includes/**/*"
+                ],
                 dest: DOCUMENT_ROOT,
                 expand: true,
                 ext: ".html"
