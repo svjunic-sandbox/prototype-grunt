@@ -7,7 +7,9 @@ Gruntfile.jsのDocumentRootの変数のパスで適当にディレクトリは�
 ```shell
 # DocumentRootじゃない時のリリース用
 grunt deploy:prod
+```
 
+```shell
 # DocumentRootからの時のリリース用
 grunt deploy:root
 ```
