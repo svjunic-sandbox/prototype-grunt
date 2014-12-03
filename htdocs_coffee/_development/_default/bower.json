@@ -1,0 +1,10 @@
+{
+	"name": "labs.sv.junic.jp",
+	"version": "0.0.1",
+	"dependencies" : {
+		"jquery" : null,
+		"lodash" : null,
+		"modernizr" : null,
+		"threejs" : null
+	}
+}

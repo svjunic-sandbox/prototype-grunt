@@ -1,0 +1,39 @@
+@charset "utf-8";
+@import "compass";
+@import "compass/css3/user-interface";
+@import "compass/reset";
+
+
+.clearfix {
+  clear:both;
+  @include clearfix();
+}
+
+.js_display-none {
+  display: none;
+}
+
+.js_banish {
+  position: absolute;
+  top:0;
+  left:0;
+  width:1px;
+  height:1px;
+  margin: -1px;
+  border:none;
+  outline:none;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+html {
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.2;
+  font-family: 'Aldrich', sans-serif;
+}
+body {
+  position: relative;
+  @include background-image(linear-gradient( #ffffff, #ffffff));
+}
+
