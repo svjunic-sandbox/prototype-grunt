@@ -1,4 +1,4 @@
-// #"Last Change: 02-Dec-2014."
+// #"Last Change: 15-Apr-2015."
 
 var DOCUMENT_ROOT = '../';
 
@@ -17,60 +17,31 @@ module.exports = function(grunt) {
             }
         }
     },
-    watch:{
-       sprite : {
-         files: [
-            './sprite_parts/**/*.png'
-         ],
-         tasks: ['compass:force']
-       },
-       scss : {
-         files: [
-            './scss/**/*.scss'
-         ],
-         tasks: ['compass:dev']
-       },
-       js : {
-         options: {
-            livereload: true,
-            nospawn: true
-         },
-         files: [
-            DOCUMENT_ROOT + 'js/**/*.js'
-         ],
-         tasks: []
-       },
-       devjs : {
-         files: [
-            './js/**/*.js'
-         ],
-         tasks: [ 'concat', 'uglify:prod', 'copy:dev' ]
-       },
-       html : {
-         files: [ 
-             DOCUMENT_ROOT + '**/*.html',
-             DOCUMENT_ROOT + '!_development/**/*.html'
-         ],
-         tasks: []
-       },
-       coffee : {
-         files: 'coffee/**/*.coffee',
-         tasks: ['coffee']
-       },
-       jade : {
-         files: 'jade/**/*.jade',
-         tasks: ['jade']
-       }
+    esteWatch: {
+      options: {
+        dirs: [ '../jade_ssi_includes/**', '../jade_includes/**', 'jade/**', 'coffee/**', 'scss/**', 'sprite_parts/**', DOCUMENT_ROOT ],
+        livereload: {
+          enabled: true,
+          extensions: [ 'jade', 'scss', 'coffee', 'html', 'js', 'css', 'png', 'jpg', 'gif' ],
+          port: 35729
+        }
+      },
+      html   : function( filepath ) { return; },
+      jade   : function( filepath ) { return [ 'newer:jade:dev' ]; },
+      scss   : function( filepath ) { return [ 'compass:dev' ]; },
+      //scss   : function( filepath ) { return [ 'compass:prod' ]; },
+      coffee : function( filepath ) { return [ 'coffee:compile', 'concat:js', 'uglify:prod' ]; },
+      js     : function( filepath ) { return [ 'uglify:prod' ]; }
     },
 
     coffee: {
       compile: {
         options:{
-          bare: true
+          bare: false
         },
         files:[{ 
           expand: true,
-          cwd: './coffee',
+          cwd: './coffee/',
           src: ['**/*.coffee'],
           dest: './js',
           ext: '.js',
@@ -79,10 +50,10 @@ module.exports = function(grunt) {
     },
 
     jade: {
-       compile: {
+       dev : {
             options: {
                 client: false,
-                pretty: true
+                pretty: false
             },
             files: [ {
                 cwd: "jade",
@@ -101,7 +72,7 @@ module.exports = function(grunt) {
        prod: {
             options: {
                 client: false,
-                pretty: false
+                pretty: true
             },
             files: [ {
                 cwd: "jade",
@@ -155,11 +126,20 @@ module.exports = function(grunt) {
       options: {
         separator: ';',
       },
-      dist: {
-        src: [
-          './js/contents/src/*'
-        ],
-        dest: './js/contents/app.js',
+      coffee : {
+        files: {
+          './coffee/contents/src/classes.coffee' : [
+            './coffee/contents/src/class/**/*.coffee'
+          ],
+        }
+      },
+      js : {
+        files: {
+          './js/contents/app.js' : [
+            './js/contents/src/classes.js',
+            './js/contents/src/main.js'
+          ],
+        },
       },
     },
 
@@ -240,8 +220,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade' );
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-newer');
+  grunt.loadNpmTasks('grunt-este-watch');
 
 
   //タスク登録
@@ -256,6 +236,7 @@ module.exports = function(grunt) {
           'jade/_includes',
           'coffee',
           'coffee/contents',
+          'coffee/contents/src',
           DOCUMENT_ROOT + 'img',
           DOCUMENT_ROOT + 'js' ,
           DOCUMENT_ROOT + 'js/libs',
@@ -279,8 +260,8 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerTask("default", ["connect","watch"]);
-  grunt.registerTask("development", ["connect","watch"]);
+  grunt.registerTask("default", ["connect","esteWatch"]);
+  grunt.registerTask("development", ["connect","esteWatch"]);
   grunt.registerTask("deploy:prod", [ 'jade:prod','compass:prod',"copy:prod","uglify:prod" ]);
   grunt.registerTask("deploy:root", [ 'jade:prod','compass:prod',"copy:prod","uglify:prod","copy:root","imagemin:release" ]);
 };

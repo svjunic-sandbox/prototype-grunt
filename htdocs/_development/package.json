@@ -24,7 +24,9 @@
     "mkdirp": ""
   },
   "devDependencies": {
-    "grunt-contrib-jade": "^0.14.1"
+    "grunt-contrib-jade": "^0.14.1",
+    "grunt-este-watch": "^0.1.18",
+    "grunt-newer": "^1.1.0"
   },
   "optionalDependencies": {
     "bower": "",

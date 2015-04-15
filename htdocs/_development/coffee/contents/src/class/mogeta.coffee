@@ -2,7 +2,7 @@
 
   "use strict"
   
-  window.= window.MOGETA || {}
+  window.MOGETA = window.MOGETA || {}
   window.MOGETA.GLOBAL = window.MOGETA.GLOBAL || {}
 
   class window.MOGETA.GLOBAL.Menu
